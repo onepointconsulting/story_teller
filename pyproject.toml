@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "story-teller"
+version = "0.1.0"
+description = "This is a small experiment of an app which can be used to generate epic stories using LLMs."
+authors = ["Gil Fernandes <gil.fernandes@onepointltd.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+crewai = "^0.1.32"
+python-dotenv = "^1.0.0"
+langchain-community = "^0.0.13"
+tomli = "^2.0.1"
+markdown2 = "^2.4.12"
+wxpython = "^4.2.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

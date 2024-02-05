@@ -1,0 +1,56 @@
+[chapters]
+human_message="""Generate all chapters for the novel described below: 
+
+{novel_content}"""
+
+style_message="""You can write the chapters in the style of {author} and the book with the title: "{book}"."""
+
+[story]
+[story.develop_chapter]
+prompt_template="""
+Generate the content of the chapter described between "=== START CHAPTER ===" and "=== END CHAPTER ===" for the novel described between "=== START NOVEL DESCRIPTION ===" and "=== END NOVEL DESCRIPTION ===".
+The list of the whole chapters can be found between "=== START ALL CHAPTERS ===" and "=== END ALL CHAPTERS ===".
+
+=== START CHAPTER ===
+{chapter_sequence}. {chapter_name}
+
+description: {chapter_description}
+=== END CHAPTER ===
+
+=== START ALL CHAPTERS ===
+{all_chapters}
+=== END ALL CHAPTERS ===
+
+=== START NOVEL DESCRIPTION ===
+{novel_content}
+=== END NOVEL DESCRIPTION ===:
+
+The chapter content should have about 1000 words.
+"""
+style_message = """The styles you can use whilst generating the content of the chapter are: {author}, "{book}"."""
+
+[story.cleanup_chapter]
+prompt_template="""
+Can you remove any sentences which are not part of the main narrative (i.e. comments about the narrative) from the following text of this chapter (`{chapter_name}`):
+
+```
+{chapter}
+```
+
+Here are some examples of sentences which are not part of the narrative and should be removed:
+
+`Note: This chapter is written in a style that emulates Tolkien's epic and descriptive prose, with a focus on the setting, the emotional weight of the characters' plight, and the establishment of a quest narrative. The content provided is original and tailored to fit the novel description and chapter outline given.`
+`This chapter, while inspired by Tolkien's style, maintains its own narrative voice suitable for the novel "The Journey to the Tower of Light." It captures the essence of the daring escape and the unity of the companions as they set forth on their epic quest.`
+`This chapter, while inspired by Tolkien's style, maintains its own narrative voice suitable for the novel "The Journey to the Tower of Light." It captures the essence of the daring escape and the unity of the companions as they set forth on their epic quest.`
+`This chapter is an original work meant to evoke the high fantasy genre without directly imitating Tolkien's style. It attempts to capture the essence of a treacherous journey through a dangerous desert, filled with mythical creatures and the power of friendship and perseverance.`
+`This chapter, crafted in a style reminiscent of Tolkien's, encapsulates the darkness and dread of the Mines of Despair while also highlighting the courage and resolve of Paul and his companions. The narrative aims to maintain the epic tone and rich descriptions that are hallmarks of Tolkien's writing.`
+`This chapter attempts to capture the essence of a Tolkien-esque narrative while adhering to the given novel and chapter descriptions. It emphasizes the internal struggles of the characters and the power of hope and unity in the face of overwhelming despair.`
+
+Note: please do add any comments about your actions.
+"""
+
+[story.image_generation]
+prompt_template="""Generate a detailed prompt to generate an image based on the following description: 
+
+```{image_desc}```"""
+image_style_remark="Note: Do not include text in the images."
