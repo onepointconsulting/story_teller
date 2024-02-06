@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from typing import Any
 
 
@@ -18,4 +20,11 @@ class StoryCallbackMixin:
 
         Args:
             chapter_name (str): The chapter that was generated
+        """
+
+    def on_html_finished(self, file_location: Path) -> Any:
+        """Run when the HTML generation has finished.
+
+        Args:
+            file_location (Path): The path of the generated file
         """

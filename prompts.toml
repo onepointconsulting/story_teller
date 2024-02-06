@@ -46,7 +46,7 @@ Here are some examples of sentences which are not part of the narrative and shou
 `This chapter, crafted in a style reminiscent of Tolkien's, encapsulates the darkness and dread of the Mines of Despair while also highlighting the courage and resolve of Paul and his companions. The narrative aims to maintain the epic tone and rich descriptions that are hallmarks of Tolkien's writing.`
 `This chapter attempts to capture the essence of a Tolkien-esque narrative while adhering to the given novel and chapter descriptions. It emphasizes the internal struggles of the characters and the power of hope and unity in the face of overwhelming despair.`
 
-Note: please do add any comments about your actions.
+Note: please do not add any comments about your actions.
 """
 
 [story.image_generation]

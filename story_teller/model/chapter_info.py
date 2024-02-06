@@ -40,6 +40,8 @@ class DevelopedChapter(Chapter):
         return f"""{self.name}
 
 {self.description}
+
+{self.content}
 """
 
 

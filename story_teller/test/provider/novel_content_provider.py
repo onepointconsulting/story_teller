@@ -1,3 +1,5 @@
+from typing import List
+
 from story_teller.model.novel_content import NovelContent, StyleInfo
 
 
@@ -49,3 +51,35 @@ The last chamber represents the beginning of a new life for Jonathan in a new Wo
 """,
         style_info=StyleInfo(author="Tolkien", book="Lord of the Rings"),
     )
+
+
+def create_simple_novel_content_4():
+    return NovelContent(
+        title="The Steward of the Forbidden Planet",
+        subtitle="Hector's Adventure in the remote planet of Sikarra",
+        details="""
+Hector and his family are the rulers of planet Antares. His rule is well established when one day the Galactic Emperor Altis the 3rd grants him the stewardship of the remote planet of Sikarra, 
+which is a planet where Unobtainium is mined (fuel used for interstellar travel). 
+Hector reluctantly accepts this invitation, because he feels he has no choice, but cannot get rid of the feeling that this invitation is not an act of friendship, but a veiled threat. 
+During the preparation to move his army and helpers to the planet Herbert receives an unexpected visit of Teneb, the High Priestess of the Order of the Dark Sisters. 
+She shows some interest in Hector's wife, Elara and her strange visions she keeps having about future events on Sikarra. Teneb meets Hector's wife letting her know that her future is far from certain and that her future lies outside of the "protected walls of the cities on Sikarra".
+
+Hector and his wife have the feeling after this meeting with Teneb that there is a hidden threat on Sikarra. But still they follow up their promise and after some months establish bases in the protected cities of Sikarra.
+Hector and his generals know that all communications are virtually impossible from this planet and that they are isolated, thus vulnerable for attacks.
+
+One night whilst Hector and his wife are sleeping the alarms go off. They are under a massive attack from Orkaners, the arch-enemies of the Antarians. 
+After a fierce battle Hector, his wife and some of hist soldiers manage to escape to a hidden base in the desert. Hector and the Antarians have been defeated even though Hector and his wife managed to escape.
+
+Hector is going to start now his journey as a freedom fighter to liberate Sikarra from the Orkaners. The novel ends here.
+""",
+        style_info=StyleInfo(author="Tolkien", book="Lord of the Rings"),
+    )
+
+
+def create_novel_content_list() -> List[NovelContent]:
+    return [
+        create_simple_novel_content(),
+        create_simple_novel_content_2(),
+        create_simple_novel_content_3(),
+        create_simple_novel_content_4()
+    ]

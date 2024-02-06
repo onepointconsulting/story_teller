@@ -124,7 +124,9 @@ def retry_func(func: Callable, times: int) -> Any:
 
 
 def develop_story(
-    novel_content: NovelContent, story_callback: StoryCallbackMixin, cleanup: bool = True
+    novel_content: NovelContent,
+    story_callback: StoryCallbackMixin,
+    cleanup_text: bool = True,
 ) -> NovelResult:
     story_path = create_story_path_folder()
     story_path.mkdir(parents=True)
@@ -160,7 +162,7 @@ def develop_story(
         markdown_file = story_path / "novel.md"
 
         # Clean up
-        if cleanup:
+        if cleanup_text:
             story_callback.on_chapter_cleanup(developed_chapter.name)
             developed_chapter.content = comment_cleanup(developed_chapter)
 
@@ -182,6 +184,7 @@ def develop_story(
         markdown_file=markdown_file,
         target_parent=story_path,
     )
+    story_callback.on_html_finished(generated_html_file)
     logger.info(f"Generated html file: {generated_html_file}")
     return NovelResult(
         chapters=developer_chapter_list,

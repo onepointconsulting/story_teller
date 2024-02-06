@@ -1,12 +1,15 @@
 from typing import List, Any, Tuple
 
+import random
 import wx
 import threading
+import webbrowser
 
 from story_teller.ui.wx.ui_helper import decorate_required, decorate_required_label
 from story_teller.ui.wx.ui_helper import layout_label_and_control, create_text_field
 from story_teller.service.simple_chain_service import develop_story
 from story_teller.service.story_callback import StoryCallbackMixin
+from story_teller.test.provider.novel_content_provider import create_novel_content_list
 
 
 class TabMain(wx.Panel):
@@ -33,6 +36,10 @@ class TabMain(wx.Panel):
         )
         decorate_required(self.story_description_textctrl)
 
+        self.generate_random_content_button = wx.Button(self, label='Generate random novel content')
+        # Bind the button to an event handler
+        self.generate_random_content_button.Bind(wx.EVT_BUTTON, self.generate_random_content)
+
         self.literary_author_label = wx.StaticText(self, label="Literary Author :")
         self.literary_author_textctrl = wx.TextCtrl(self)
         self.literary_author_textctrl.SetValue(self.novel_content.style_info.author)
@@ -41,12 +48,19 @@ class TabMain(wx.Panel):
         self.book_name_textctrl = wx.TextCtrl(self)
         self.book_name_textctrl.SetValue(self.novel_content.style_info.book)
 
+        self.cleanup_checkbox = wx.CheckBox(
+            self, label="Cleanup texts after generation"
+        )
+
         self.gauge = wx.Gauge(self, range=100, pos=(50, 100), size=(100, 25))
 
         # Create submit button
         self.submit_button = wx.Button(self, label="Submit")
         self.submit_button.Bind(wx.EVT_BUTTON, self.on_submit)
 
+        self.layout_components()
+
+    def layout_components(self):
         # Add the form elements to the layout
         layout_label_and_control(
             self.layout, self.story_title_label, self.story_title_textctrl
@@ -56,12 +70,18 @@ class TabMain(wx.Panel):
         )
         self.layout.Add(self.story_description_label, 0, wx.ALL, 5)
         self.layout.Add(self.story_description_textctrl, 1, wx.EXPAND | wx.ALL, 5)
+
+        self.layout.Add(self.generate_random_content_button, 0, wx.ALL, 5)
+
         layout_label_and_control(
             self.layout, self.literary_author_label, self.literary_author_textctrl
         )
         layout_label_and_control(
             self.layout, self.book_name_label, self.book_name_textctrl
         )
+
+        self.layout.Add(self.cleanup_checkbox, 0, wx.ALL, 5)
+
         self.layout.Add(self.gauge, 0, wx.ALL | wx.EXPAND, 5)
         self.layout.Add(self.submit_button, 0, wx.ALL | wx.EXPAND, 5)
 
@@ -129,9 +149,17 @@ class TabMain(wx.Panel):
             def on_chapter_cleanup(self, chapter_name: str) -> Any:
                 wx.CallAfter(tab_main.update_chapter_cleanup, chapter_name)
 
+            def on_html_finished(self, file_location) -> Any:
+                if file_location is not None and file_location.exists():
+                    webbrowser.open(file_location)
+
         simple_story_callback = SimpleStoryCallback()
 
-        novel_result = develop_story(self.novel_content, simple_story_callback)
+        novel_result = develop_story(
+            self.novel_content,
+            simple_story_callback,
+            cleanup_text=self.cleanup_checkbox.GetValue(),
+        )
         wx.CallAfter(self.submit_button.Enable, True)
         wx.CallAfter(
             self.parent_frame.SetStatusText,
@@ -146,6 +174,14 @@ class TabMain(wx.Panel):
 
     def update_chapter_cleanup(self, chapter_name: str):
         self.parent_frame.SetStatusText(f"Cleaning chapter: {chapter_name}")
+
+
+    def generate_random_content(self, _event):
+        novel_list = create_novel_content_list()
+        novel_data = random.choice(novel_list)
+        self.story_title_textctrl.SetValue(novel_data.title)
+        self.story_sub_title_textctrl.SetValue(novel_data.subtitle)
+        self.story_description_textctrl.SetValue(novel_data.details)
 
 
 def validate(
