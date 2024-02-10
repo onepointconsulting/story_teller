@@ -2,7 +2,7 @@ import re
 
 from story_teller.config.toml_support import prompts
 from story_teller.config.config import cfg
-from story_teller.model.chapter_info import DevelopedChapter
+from story_teller.model.developed_chapter import DevelopedChapter
 
 from langchain.chains import LLMChain
 from langchain.prompts import (

@@ -14,12 +14,14 @@ from langchain.prompts import (
 from story_teller.config.config import cfg
 from story_teller.config.toml_support import prompts
 from story_teller.model.novel_content import NovelContent, ChapterDevelopment
-from story_teller.model.chapter_info import (
-    ChapterList,
+from story_teller.model.developed_chapter import (
     DevelopedChapter,
     DevelopedChapterList,
-    Chapter,
     NovelResult,
+)
+from story_teller.model.chapter_info import (
+    ChapterList,
+    Chapter,
 )
 from story_teller.tools.image_dall_e_tool import generate_image
 from story_teller.config.log_factory import logger
@@ -155,6 +157,7 @@ def develop_story(
             name=chapter.name,
             description=chapter.description,
             content=content,
+            novel_content=novel_content,
         )
         developed_chapter.image_location = generate_image_from_chapter(
             developed_chapter
@@ -204,9 +207,8 @@ def create_story_path_folder():
 def generate_image_from_chapter(
     developed_chapter: DevelopedChapter,
 ) -> Union[Path, None]:
-    image_prompt = developed_chapter.image_str()
     try:
-        return generate_image(image_prompt)
+        return generate_image(developed_chapter)
     except:
         logger.exception("Could not generate image")
         return None

@@ -9,27 +9,35 @@ from story_teller.config.toml_support import prompts
 from langchain.chains import LLMChain
 from langchain.agents import Tool
 from langchain.prompts import PromptTemplate
+from story_teller.model.developed_chapter import DevelopedChapter
 from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
 
 
-def generate_image(text: str) -> Union[Path, None]:
+def generate_image(developed_chapter: DevelopedChapter) -> Union[Path, None]:
     prompt = PromptTemplate(
         input_variables=["image_desc"],
         template=prompts["story"]["image_generation"]["prompt_template"],
     )
-    chain = LLMChain(llm=cfg.image_llm, prompt=prompt)
+
     dall_e = DallEAPIWrapper()
     dall_e.model_name = cfg.image_model
-    invocation = chain.invoke(text)
-    invocation_text = invocation.get("text")
-    if invocation_text is None:
-        return None
-    image_style_remark = prompts["story"]["image_generation"]["image_style_remark"]
-    invocation_text = f"""{invocation_text}
 
-{image_style_remark}
-    """
-    image_url = dall_e.run(invocation_text)
+    if cfg.image_intermediate_prompt:
+        logger.info("Using intermediate prompt for image generation")
+        chain = LLMChain(llm=cfg.image_llm, prompt=prompt)
+        invocation = chain.invoke(developed_chapter.image_str())
+        invocation_text = invocation.get("text")
+        if invocation_text is None:
+            return None
+        image_style_remark = prompts["story"]["image_generation"]["image_style_remark"]
+        invocation_text = f"""{invocation_text}
+
+    {image_style_remark}
+        """
+        image_url = dall_e.run(invocation_text)
+    else:
+        logger.info("Using no intermediate prompt to generate images")
+        image_url = dall_e.run(developed_chapter.name_description())
     return download_image(image_url, cfg.image_download_folder)
 
 
@@ -70,5 +78,6 @@ image_tool = Tool(
 )
 
 if __name__ == "__main__":
+    cfg.image_intermediate_prompt = True
     generated_image = image_tool.invoke("A beautiful castle on top of a hill at sunset")
     print(generated_image)

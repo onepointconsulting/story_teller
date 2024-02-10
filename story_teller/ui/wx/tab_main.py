@@ -36,9 +36,13 @@ class TabMain(wx.Panel):
         )
         decorate_required(self.story_description_textctrl)
 
-        self.generate_random_content_button = wx.Button(self, label='Generate random novel content')
+        self.generate_random_content_button = wx.Button(
+            self, label="Generate random novel content"
+        )
         # Bind the button to an event handler
-        self.generate_random_content_button.Bind(wx.EVT_BUTTON, self.generate_random_content)
+        self.generate_random_content_button.Bind(
+            wx.EVT_BUTTON, self.generate_random_content
+        )
 
         self.literary_author_label = wx.StaticText(self, label="Literary Author :")
         self.literary_author_textctrl = wx.TextCtrl(self)
@@ -55,7 +59,7 @@ class TabMain(wx.Panel):
         self.gauge = wx.Gauge(self, range=100, pos=(50, 100), size=(100, 25))
 
         # Create submit button
-        self.submit_button = wx.Button(self, label="Submit")
+        self.submit_button = wx.Button(self, label="Start novel generation")
         self.submit_button.Bind(wx.EVT_BUTTON, self.on_submit)
 
         self.layout_components()
@@ -132,6 +136,7 @@ class TabMain(wx.Panel):
             self.parent_frame.SetStatusText(validation_messages[0])
         else:
             self.submit_button.Disable()
+            self.generate_random_content_button.Disable()
             self.parent_frame.SetStatusText(
                 "Novel generation has started. This should take some minutes. Please wait ..."
             )
@@ -161,6 +166,7 @@ class TabMain(wx.Panel):
             cleanup_text=self.cleanup_checkbox.GetValue(),
         )
         wx.CallAfter(self.submit_button.Enable, True)
+        wx.CallAfter(self.generate_random_content_button.Enable, True)
         wx.CallAfter(
             self.parent_frame.SetStatusText,
             f"Novel generation is finished. Please check the generated file: {novel_result.html_file}",
@@ -174,7 +180,6 @@ class TabMain(wx.Panel):
 
     def update_chapter_cleanup(self, chapter_name: str):
         self.parent_frame.SetStatusText(f"Cleaning chapter: {chapter_name}")
-
 
     def generate_random_content(self, _event):
         novel_list = create_novel_content_list()

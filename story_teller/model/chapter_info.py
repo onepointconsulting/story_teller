@@ -1,5 +1,5 @@
-from typing import List, Union
-from pathlib import Path
+from typing import List
+
 from pydantic.v1 import BaseModel, Field
 
 
@@ -17,34 +17,6 @@ description: {self.description}
         return self.__str__()
 
 
-class DevelopedChapter(Chapter):
-    content: str = Field(..., description="The content of the chapter")
-    image_location: Union[Path, None] = Field(
-        default=None, description="The location of the image"
-    )
-
-    def markdown(self):
-        image_str = (
-            f"""![{self.name}]({self.image_location.name} "{self.name}")"""
-            if self.image_location is not None
-            else ""
-        )
-        return f"""### {self.name}
-#### {self.description}
-
-{image_str}
-{self.content}
-"""
-
-    def image_str(self) -> str:
-        return f"""{self.name}
-
-{self.description}
-
-{self.content}
-"""
-
-
 class ChapterList(BaseModel):
     chapters: List[Chapter] = Field(..., description="The list of chapters")
 
@@ -53,19 +25,3 @@ class ChapterList(BaseModel):
         for c in self.chapters:
             out += f"{c}\n\n"
         return out
-
-
-class DevelopedChapterList(BaseModel):
-    chapters: List[DevelopedChapter] = Field(
-        ..., description="The list of chapters with content"
-    )
-
-
-class NovelResult(BaseModel):
-    chapters: DevelopedChapterList = Field(
-        ..., description="all of the chapters of the novel"
-    )
-    markdown_file: Path = Field(
-        ..., description="Markdown file with the novel chapters"
-    )
-    html_file: Path = Field(..., description="HTML file with the novel chapters")

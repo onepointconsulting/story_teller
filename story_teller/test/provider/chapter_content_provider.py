@@ -1,5 +1,5 @@
 from pathlib import Path
-from story_teller.model.chapter_info import DevelopedChapter
+from story_teller.model.developed_chapter import DevelopedChapter
 
 
 def create_sample_chapter_content():

@@ -81,5 +81,5 @@ def create_novel_content_list() -> List[NovelContent]:
         create_simple_novel_content(),
         create_simple_novel_content_2(),
         create_simple_novel_content_3(),
-        create_simple_novel_content_4()
+        create_simple_novel_content_4(),
     ]
