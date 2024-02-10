@@ -138,6 +138,7 @@ def develop_story(
 
     res = create_chapters(novel_content)
     chapter_list = res.chapters
+    story_callback.on_chapters_generated([c.name for c in res.chapters])
     developer_chapter_list = DevelopedChapterList(chapters=[])
     for i, chapter in enumerate(chapter_list):
         chapter_development = ChapterDevelopment(

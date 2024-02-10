@@ -38,8 +38,18 @@ class TabConfig(wx.Panel):
         self.spinCtrl.SetValue(cfg.openai_temperature)  # Set initial value
         self.spinCtrl.Bind(wx.EVT_SPINCTRLDOUBLE, self.on_temperature_changed)
 
+        # Create a wx.ComboBox dropdown for the image quality of Dall-E
+        image_quality_choices = ["standard", "hd"]
+        self.image_quality_dall_e_text = wx.StaticText(
+            self, label=decorate_required_label("Dall-E image quality")
+        )
+        self.image_quality_dall_e_combo = wx.ComboBox(self, choices=image_quality_choices)
+        self.image_quality_dall_e_combo.SetValue(image_quality_choices[0])
+        self.image_quality_dall_e_combo.Bind(wx.EVT_COMBOBOX, self.image_quality_dall_e_combo_changed)
+
         self.image_intermediate_prompt = wx.CheckBox(
-            self, label="Use intermediate prompt to generate images"
+            self,
+            label="Use intermediate prompt to generate images (unticking speeds up generation)",
         )
         self.image_intermediate_prompt.SetValue(cfg.image_intermediate_prompt)
         self.image_intermediate_prompt.Bind(
@@ -57,12 +67,16 @@ class TabConfig(wx.Panel):
             self.layout, self.combo_models_label, self.openai_models
         )
         layout_label_and_control(self.layout, self.temperature_label, self.spinCtrl)
+        layout_label_and_control(self.layout, self.image_quality_dall_e_text, self.image_quality_dall_e_combo)
         self.layout.Add(self.image_intermediate_prompt, 0, wx.ALL, 5)
 
         self.SetSizer(self.layout)
 
     def on_model_changed(self, _event):
         cfg.openai_model = self.openai_models.GetValue()
+
+    def image_quality_dall_e_combo_changed(self, _event):
+        cfg.image_quality_dall_e = self.image_quality_dall_e_combo.GetValue()
 
     def on_key_changed(self, _event):
         cfg.openai_api_key = self.chatgpt_key_textctrl.GetValue()

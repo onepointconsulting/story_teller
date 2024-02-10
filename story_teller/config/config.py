@@ -1,10 +1,12 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from langchain_openai import ChatOpenAI, OpenAI
 
-load_dotenv()
+from story_teller.config.log_factory import logger
+
+load_dotenv(find_dotenv())
 
 
 def create_if_not_exists(path: Path):
@@ -17,26 +19,26 @@ class Config:
 
     # OpenAI related
     openai_api_key = os.getenv("OPENAI_API_KEY", "")
+    logger.info("Using Open AI API Key %s", openai_api_key)
     assert openai_api_key is not None
     open_ai_temperature = float(os.getenv("OPENAI_TEMPERATURE", "0."))
     openai_model = os.getenv("OPENAI_MODEL", "gpt-4-1106-preview")
     assert openai_model is not None
-    openai_timeout = float(os.getenv("OPENAI_TIMEOUT", 30.0))
-    has_langchain_cache = os.getenv("LANGCHAIN_CACHE") == "true"
+    openai_timeout = float(os.getenv("OPENAI_TIMEOUT", 180.0))
+    has_langchain_cache = os.getenv("LANGCHAIN_CACHE", "false") == "true"
     streaming = os.getenv("OPENAI_STREAMING", "false") == "true"
-    openai_temperature = float(os.getenv("OPENAI_TEMPERATURE"))
+    openai_temperature = float(os.getenv("OPENAI_TEMPERATURE", "0.7"))
     openai_max_tokens = int(os.getenv("OPENAI_MAX_TOKENS", "4096"))
 
-    stories_path = Path(os.getenv("STORIES_PATH"))
-    if not stories_path.exists():
-        stories_path.mkdir(parents=True)
-
-    openai_image_gen_temperature = float(os.getenv("OPENAI_IMAGE_GEN_TEMPERATURE"))
-
-    image_model = os.getenv("IMAGE_MODEL")
+    image_model = os.getenv("IMAGE_MODEL", "dall-e-3")
     assert image_model is not None
-    image_download_folder = Path(os.getenv("IMAGE_DOWNLOAD_FOLDER"))
-    create_if_not_exists(image_download_folder)
+    image_quality_dall_e = os.getenv("IMAGE_QUALITY_DALL_E", "standard")
+    assert image_quality_dall_e is not None
+
+    openai_image_gen_temperature = float(os.getenv("OPENAI_IMAGE_GEN_TEMPERATURE", "0.7"))
+
+    tmp_folder_str = os.getenv("TMP_FOLDER", "")
+    logger.info("Using stories tmp_folder_str %s", tmp_folder_str)
 
     html_template_path = project_root / "templates"
     assert html_template_path.exists()
@@ -60,6 +62,18 @@ class Config:
                 temperature=self.openai_image_gen_temperature,
             )
 
+    def init_temp_folders(self):
+        if self.tmp_folder_str != "":
+            self.tmp_folder = Path(self.tmp_folder_str)
+            self.stories_path = self.tmp_folder / "output"
+            create_if_not_exists(self.stories_path)
+            logger.info("Using stories path %s", self.stories_path)
+
+            self.image_download_folder = self.tmp_folder / "image_download_folder"
+            create_if_not_exists(self.image_download_folder)
+
 
 cfg = Config()
 cfg.init_llms()
+cfg.init_temp_folders()
+

@@ -146,6 +146,9 @@ class TabMain(wx.Panel):
         tab_main = self
 
         class SimpleStoryCallback(StoryCallbackMixin):
+            def on_chapters_generated(self, chapters: List[str]) -> Any:
+                wx.CallAfter(tab_main.update_chapters_generated, (chapters))
+
             def on_chapter_finish(
                 self, chapter_name: str, completed: int, total: int
             ) -> Any:
@@ -171,6 +174,9 @@ class TabMain(wx.Panel):
             self.parent_frame.SetStatusText,
             f"Novel generation is finished. Please check the generated file: {novel_result.html_file}",
         )
+
+    def update_chapters_generated(self, chapters: List[str]):
+        self.parent_frame.SetStatusText(f"Generated {len(chapters)} chapter(s)")
 
     def update_progress(self, progress_data: Tuple[str, int, int]):
         (name, completed, total) = progress_data
