@@ -43,9 +43,13 @@ class TabConfig(wx.Panel):
         self.image_quality_dall_e_text = wx.StaticText(
             self, label=decorate_required_label("Dall-E image quality")
         )
-        self.image_quality_dall_e_combo = wx.ComboBox(self, choices=image_quality_choices)
+        self.image_quality_dall_e_combo = wx.ComboBox(
+            self, choices=image_quality_choices
+        )
         self.image_quality_dall_e_combo.SetValue(image_quality_choices[0])
-        self.image_quality_dall_e_combo.Bind(wx.EVT_COMBOBOX, self.image_quality_dall_e_combo_changed)
+        self.image_quality_dall_e_combo.Bind(
+            wx.EVT_COMBOBOX, self.image_quality_dall_e_combo_changed
+        )
 
         self.image_intermediate_prompt = wx.CheckBox(
             self,
@@ -67,7 +71,9 @@ class TabConfig(wx.Panel):
             self.layout, self.combo_models_label, self.openai_models
         )
         layout_label_and_control(self.layout, self.temperature_label, self.spinCtrl)
-        layout_label_and_control(self.layout, self.image_quality_dall_e_text, self.image_quality_dall_e_combo)
+        layout_label_and_control(
+            self.layout, self.image_quality_dall_e_text, self.image_quality_dall_e_combo
+        )
         self.layout.Add(self.image_intermediate_prompt, 0, wx.ALL, 5)
 
         self.SetSizer(self.layout)

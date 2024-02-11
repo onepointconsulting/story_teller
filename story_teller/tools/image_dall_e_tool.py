@@ -21,7 +21,7 @@ def generate_image(developed_chapter: DevelopedChapter) -> Union[Path, None]:
         template=prompts["story"]["image_generation"]["prompt_template"],
     )
 
-    os.environ['OPENAI_API_KEY'] = cfg.openai_api_key
+    os.environ["OPENAI_API_KEY"] = cfg.openai_api_key
     logger.info("Using Dall-E quality: %s", cfg.image_quality_dall_e)
     dall_e = DallEAPIWrapper(quality=cfg.image_quality_dall_e)
     dall_e.model_name = cfg.image_model

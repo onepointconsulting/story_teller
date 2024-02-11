@@ -35,7 +35,9 @@ class Config:
     image_quality_dall_e = os.getenv("IMAGE_QUALITY_DALL_E", "standard")
     assert image_quality_dall_e is not None
 
-    openai_image_gen_temperature = float(os.getenv("OPENAI_IMAGE_GEN_TEMPERATURE", "0.7"))
+    openai_image_gen_temperature = float(
+        os.getenv("OPENAI_IMAGE_GEN_TEMPERATURE", "0.7")
+    )
 
     tmp_folder_str = os.getenv("TMP_FOLDER", "")
     logger.info("Using stories tmp_folder_str %s", tmp_folder_str)
@@ -76,4 +78,3 @@ class Config:
 cfg = Config()
 cfg.init_llms()
 cfg.init_temp_folders()
-
