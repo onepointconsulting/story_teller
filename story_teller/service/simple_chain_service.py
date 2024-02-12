@@ -28,6 +28,8 @@ from story_teller.config.log_factory import logger
 from story_teller.service.markdown_conversion import convert_markdown_html
 from story_teller.service.cleanup_service import cleanup, comment_cleanup
 from story_teller.service.story_callback import StoryCallbackMixin
+import story_teller.tools.mymidjourney_tool as mymidjourney_tool
+from story_teller.mymidjourney.config import midjourney_cfg
 
 
 def extract_entity(
@@ -209,6 +211,8 @@ def generate_image_from_chapter(
     developed_chapter: DevelopedChapter,
 ) -> Union[Path, None]:
     try:
+        if cfg.use_midjourney and midjourney_cfg.bearer_token is not None:
+            return mymidjourney_tool.generate_image(developed_chapter)
         return generate_image(developed_chapter)
     except:
         logger.exception("Could not generate image")

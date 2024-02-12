@@ -35,7 +35,7 @@ class DevelopedChapter(Chapter):
 {self.content}
 """
 
-    def name_description(self) -> str:
+    def name_description_with_style(self) -> str:
         style_info = ""
         if self.novel_content is not None and self.novel_content.style_info is not None:
             style_info = f"Inspired on `{self.novel_content.style_info.book}` by `{self.novel_content.style_info.author}`"

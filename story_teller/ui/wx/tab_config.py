@@ -3,6 +3,7 @@ import wx
 from story_teller.config.config import cfg
 from story_teller.ui.wx.ui_helper import decorate_required, decorate_required_label
 from story_teller.ui.wx.ui_helper import layout_label_and_control
+from story_teller.mymidjourney.config import midjourney_cfg
 
 
 class TabConfig(wx.Panel):
@@ -60,6 +61,20 @@ class TabConfig(wx.Panel):
             wx.EVT_CHECKBOX, self.image_intermediate_prompt_checked
         )
 
+        self.use_midjourney_check = wx.CheckBox(
+            self, label="Use Midjourney image generation"
+        )
+        # Bind the checkbox event to the handler
+        self.use_midjourney_check.Bind(wx.EVT_CHECKBOX, self.on_activate_midjourney)
+        # Create a text field and initially hide it
+        self.mymidjourney_key_label = wx.StaticText(
+            self, label=decorate_required_label("My Midjourney Key")
+        )
+        self.mymidjourney_key_text = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+        self.mymidjourney_key_text.Bind(wx.EVT_TEXT, self.on_midjourney_key_changed)
+
+        self.hide_midjourney_fields()
+
         self.layout_components()
 
     def layout_components(self):
@@ -74,7 +89,12 @@ class TabConfig(wx.Panel):
         layout_label_and_control(
             self.layout, self.image_quality_dall_e_text, self.image_quality_dall_e_combo
         )
-        self.layout.Add(self.image_intermediate_prompt, 0, wx.ALL, 5)
+        self.layout_checkbox(self.image_intermediate_prompt)
+        self.layout_checkbox(self.use_midjourney_check)
+
+        layout_label_and_control(
+            self.layout, self.mymidjourney_key_label, self.mymidjourney_key_text
+        )
 
         self.SetSizer(self.layout)
 
@@ -87,6 +107,9 @@ class TabConfig(wx.Panel):
     def on_key_changed(self, _event):
         cfg.openai_api_key = self.chatgpt_key_textctrl.GetValue()
 
+    def on_midjourney_key_changed(self, _event):
+        midjourney_cfg.bearer_token = self.mymidjourney_key_text.GetValue()
+
     def on_temperature_changed(self, _event):
         cfg.openai_temperature = self.spinCtrl.GetValue()
 
@@ -95,6 +118,23 @@ class TabConfig(wx.Panel):
 
     def set_my_open_api_key(self, key: str):
         self.chatgpt_key_textctrl.SetValue(key)
+
+    def layout_checkbox(self, element: wx.CheckBox):
+        self.layout.Add(element, 0, wx.ALL, 5)
+
+    def on_activate_midjourney(self, _event):
+        if self.use_midjourney_check.IsChecked():
+            self.mymidjourney_key_label.Show()
+            self.mymidjourney_key_text.Show()
+            cfg.use_midjourney = False
+        else:
+            self.hide_midjourney_fields()
+            cfg.use_midjourney = True
+        self.Layout()
+
+    def hide_midjourney_fields(self):
+        self.mymidjourney_key_label.Hide()
+        self.mymidjourney_key_text.Hide()
 
 
 def set_openai_api_key(input_textctrl: wx.TextCtrl):

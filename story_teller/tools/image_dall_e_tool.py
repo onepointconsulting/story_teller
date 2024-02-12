@@ -13,6 +13,7 @@ from langchain.agents import Tool
 from langchain.prompts import PromptTemplate
 from story_teller.model.developed_chapter import DevelopedChapter
 from langchain_community.utilities.dalle_image_generator import DallEAPIWrapper
+from story_teller.mymidjourney.utils.download_folder import download_image
 
 
 def generate_image(developed_chapter: DevelopedChapter) -> Union[Path, None]:
@@ -41,38 +42,8 @@ def generate_image(developed_chapter: DevelopedChapter) -> Union[Path, None]:
         image_url = dall_e.run(invocation_text)
     else:
         logger.info("Using no intermediate prompt to generate images")
-        image_url = dall_e.run(developed_chapter.name_description())
+        image_url = dall_e.run(developed_chapter.name_description_with_style())
     return download_image(image_url, cfg.image_download_folder)
-
-
-def download_image(image_url: str, folder_path: Path) -> Union[Path, None]:
-    # Extract the image name from the URL
-    image_name = extract_image_path(image_url)
-
-    # Create the full path to save the image
-    full_path = folder_path / image_name
-
-    # Send a GET request to the image URL
-    response = requests.get(image_url)
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Open the file in binary write mode and save the image
-        full_path.write_bytes(response.content)
-        logger.info(f"Image successfully downloaded: {full_path}")
-        return full_path
-    else:
-        logger.error(
-            "Failed to download image with response code {response.status_code}"
-        )
-        return None
-
-
-def extract_image_path(image_url: str) -> str:
-    initial_split = image_url.split("?")
-    first_chunk = initial_split[0]
-    image_name = first_chunk.split("/")[-1]
-    return image_name
 
 
 image_tool = Tool(

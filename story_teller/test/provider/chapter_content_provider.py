@@ -1,5 +1,8 @@
 from pathlib import Path
 from story_teller.model.developed_chapter import DevelopedChapter
+from story_teller.test.provider.novel_content_provider import (
+    create_simple_novel_content_3,
+)
 
 
 def create_sample_chapter_content():
@@ -42,9 +45,10 @@ def create_sample_chapter_content():
 
 
 def create_developed_chapter() -> DevelopedChapter:
+    novel_content = create_simple_novel_content_3()
     return DevelopedChapter(
         sequence=1,
-        name="Jonahtahn and The Chamber of Introspection and Silence",
+        name="Jonathan and The Chamber of Introspection and Silence",
         description="Jonathan begins his arduous journey by entering the first chamber, where he must face his own thoughts and learn the virtue of stillness.",
         content="""
 In the bowels of Thorn's castle, the echo of war's cacophony raged above, the ground beneath Jonathan's feet trembled with the fury of the besieging forces. Here, the air was thick with the dust of ancient stones, and the darkness was a tangible shroud around him. His hands brushed against the cold, damp walls as he navigated the labyrinthine passages, a serendipitous path that led him to the first of the eight chambers: the Chamber of Introspection and Silence.
@@ -70,4 +74,5 @@ As he walked away, his footsteps were measured and deliberate, each one a testam
 In this chapter we are capturing the style of Hemigway using his colourful and metaphorical language.
 """,
         image_location=Path("/tmp/test.png"),
+        novel_content=novel_content,
     )

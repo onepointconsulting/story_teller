@@ -46,6 +46,7 @@ class Config:
     assert html_template_path.exists()
 
     image_intermediate_prompt = bool(os.getenv("IMAGE_INTERMEDIATE_PROMPT", "True"))
+    use_midjourney = os.getenv("USE_MIDJOURNEY", "false") == "true"
 
     def init_llms(self):
         openai_api_key = self.openai_api_key
