@@ -6,11 +6,13 @@ This is a small experiment of an app which can be used to generate epic stories 
 
 Please make sure to install [Conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) first.
 
-```
+```bash
 conda create -n story_teller python=3.12
 conda activate story_teller
 pip install poetry
 poetry install
+# This is important for PDF generation
+playwright install
 ```
 
 ## Running unit tests

@@ -30,7 +30,7 @@ from story_teller.service.cleanup_service import cleanup, comment_cleanup
 from story_teller.service.story_callback import StoryCallbackMixin
 import story_teller.tools.mymidjourney_tool as mymidjourney_tool
 from story_teller.mymidjourney.config import midjourney_cfg
-
+from story_teller.service.pdf_service import convert_to_pdf
 
 def extract_entity(
     res: List[dict],
@@ -196,6 +196,7 @@ def develop_story(
         chapters=developer_chapter_list,
         markdown_file=markdown_file,
         html_file=generated_html_file,
+        pdf_file=convert_to_pdf(generated_html_file)
     )
 
 

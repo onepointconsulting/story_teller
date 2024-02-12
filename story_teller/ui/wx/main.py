@@ -1,4 +1,5 @@
 from pathlib import Path
+import webbrowser
 
 import wx
 
@@ -30,6 +31,8 @@ class StoryTellerConfigFrame(wx.Frame):
         super(StoryTellerConfigFrame, self).__init__(parent, title=title, size=size)
 
         self.novel_content: NovelContent = create_empty_novel_content()
+
+        self.add_menus()
 
         # Create a Notebook widget
         notebook = wx.Notebook(self)
@@ -98,6 +101,23 @@ class StoryTellerConfigFrame(wx.Frame):
                     cfg.init_temp_folders()
                 except IOError:
                     wx.LogError(f"Cannot open directory '{pathname}'.")
+
+    def add_menus(self):
+        # Create a menu bar
+        menuBar = wx.MenuBar()
+        
+        # Create a menu
+        file_menu = wx.Menu()
+        
+        # Add a menu item for opening a folder, and bind it to the event handler
+        folderItem = file_menu.Append(wx.ID_ANY, 'Open Generation Folder', 'Reveals the generation folder')
+        self.Bind(wx.EVT_MENU, self.open_generation_folder, folderItem)
+
+        menuBar.Append(file_menu, '&File')
+        self.SetMenuBar(menuBar)
+
+    def open_generation_folder(self, _event):
+        webbrowser.open(cfg.stories_path)
 
 
 def show_error_message(parent):

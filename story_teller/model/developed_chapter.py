@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, List
+from typing import Union, List, Optional
 
 from pydantic.v1 import BaseModel, Field
 
@@ -61,3 +61,4 @@ class NovelResult(BaseModel):
         ..., description="Markdown file with the novel chapters"
     )
     html_file: Path = Field(..., description="HTML file with the novel chapters")
+    pdf_file: Optional[Path] = Field(..., description="The generated PDF file")

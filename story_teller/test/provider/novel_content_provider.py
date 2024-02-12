@@ -72,7 +72,32 @@ After a fierce battle Hector, his wife and some of hist soldiers manage to escap
 
 Hector is going to start now his journey as a freedom fighter to liberate Sikarra from the Orkaners. The novel ends here.
 """,
-        style_info=StyleInfo(author="Tolkien", book="Lord of the Rings"),
+        style_info=StyleInfo(author="Isaac Asimov", book="I, Robot"),
+    )
+
+
+def create_simple_novel_content_5():
+    return NovelContent(
+        title="Allan's Adventure in the Planet of Couscan",
+        subtitle="Allan's Pursuit in the planet city of Couscan",
+        details="""
+Allan is a young man living with his parents in the large futuristic planet city of Couscan. His parents Karina and John are quite well known politicians with liberal attitudes and firm believers in the ideas of the republic.
+One day Allan comes home from school and something seems to be out of place. His mother Karina and his father John are not at home. Tehir, their maid also does not know where they are. Allan starts to get worried as there are 
+no signs of his parents. 
+It is at this moment that he gets a holographic call from Isar, a military leader, befriended with his family who tells him to keep calm and that his parent are held prisoners in the Temple of the Guardians. 
+Allan heard about the ancient Temple of the Guardians which is an old abondoned temple in Couscan with a huge maze. Isar tells him to come with him to rescue them and Allan immediately joins him.
+Allan and Isar travel to the abandoned temple of the Guardians and enter it. Isar is taking with him a sensor to detect humans in the hope to track his parents in the maze.
+Allan and Isar detect some signals in the maze and start to follow them. At a certain stage they enter a chamber with the statue of the ancient God Brahma, the creator. 
+There is a message in this chamber "To know the Shadows and the Light is the Way". The chamber is totally closed off, just one entry and nothing else. But Allan discovers the hint and manages to find a hidden corridor based
+on this message. They now reach another chamber, the chamber of another deity Vishnu which presents another riddle: "To know the way is to know the one in the middle". After some thinking both figure out that this is 
+the hint to find another secret passage. Finally they traverse and reach another passage, the passage of another deity, the God of Destruction. Again there is a message in this chamber "Only the one who walks through fire
+will find the way.". There is indeed a picture of a fire in this chamber, and Allan and Isar figure out the way to understand the meaning of the riddle and the picture and find another tunnel leading to the corridor where 
+they find their parents and a high priest of the old order the Guardians. His parents are sleeping, aparently, drugged. 
+The high priest explains them that he wants to re-instate the old order of the Guardians. He wants to ressurrect the past.
+After a fight Allan and Isar are able to re-awaken his parents, and also to flee the maze by tracing back their. The high priest however disappears in the maze and is never seen again, but vows to come back. 
+The menace of the past remains hidden in the maze.
+""",
+        style_info=StyleInfo(author="Isaac Asimov", book="I, Robot"),
     )
 
 
@@ -82,4 +107,5 @@ def create_novel_content_list() -> List[NovelContent]:
         create_simple_novel_content_2(),
         create_simple_novel_content_3(),
         create_simple_novel_content_4(),
+        create_simple_novel_content_5()
     ]
