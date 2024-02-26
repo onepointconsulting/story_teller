@@ -42,3 +42,14 @@ If you are on Windows and have Powershell installed, you can simply run this scr
 ```
 .\start.ps1
 ```
+
+## Fundamental Environment Variables
+
+There are three expected environment variables:
+
+```
+OPENAI_API_KEY=<key>
+TMP_FOLDER=<output folder for your stories>
+
+MY_MIDJOURNEY_BEARER_TOKEN=<My Midjourney token (optional)>
+```
