@@ -5,11 +5,13 @@ import wx
 import threading
 import webbrowser
 
+from story_teller.config.log_factory import logger
 from story_teller.ui.wx.ui_helper import decorate_required, decorate_required_label
 from story_teller.ui.wx.ui_helper import layout_label_and_control, create_text_field
 from story_teller.service.simple_chain_service import develop_story
 from story_teller.service.story_callback import StoryCallbackMixin
 from story_teller.test.provider.novel_content_provider import create_novel_content_list
+from story_teller.service.generate_novel_content import generate_novel_content
 
 
 class TabMain(wx.Panel):
@@ -37,12 +39,31 @@ class TabMain(wx.Panel):
         decorate_required(self.story_description_textctrl)
 
         self.generate_random_content_button = wx.Button(
-            self, label="Generate random novel content"
+            self, label="Pick random novel content"
         )
-        # Bind the button to an event handler
+        # Bind generate_random_content_button to an event handler
         self.generate_random_content_button.Bind(
             wx.EVT_BUTTON, self.generate_random_content
         )
+
+        self.generate_synopsis_button = wx.Button(
+            self, label="Generate synopsis on the fly"
+        )
+
+        # Bind generate_random_content_button to an event handler
+        self.generate_synopsis_button.Bind(wx.EVT_BUTTON, self.generate_on_the_fly)
+
+        self.generate_hbox = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.generate_hbox.Add(
+            self.generate_random_content_button, flag=wx.LEFT, border=10
+        )
+
+        # Add stretchable space between the buttons with proportion=1
+        # to push the buttons to the left and right sides
+        self.generate_hbox.AddStretchSpacer(prop=1)
+
+        self.generate_hbox.Add(self.generate_synopsis_button, flag=wx.RIGHT, border=10)
 
         self.literary_author_label = wx.StaticText(self, label="Literary Author :")
         self.literary_author_textctrl = wx.TextCtrl(self)
@@ -75,7 +96,7 @@ class TabMain(wx.Panel):
         self.layout.Add(self.story_description_label, 0, wx.ALL, 5)
         self.layout.Add(self.story_description_textctrl, 1, wx.EXPAND | wx.ALL, 5)
 
-        self.layout.Add(self.generate_random_content_button, 0, wx.ALL, 5)
+        self.layout.Add(self.generate_hbox, 0, wx.ALL, 5)
 
         layout_label_and_control(
             self.layout, self.literary_author_label, self.literary_author_textctrl
@@ -163,17 +184,21 @@ class TabMain(wx.Panel):
 
         simple_story_callback = SimpleStoryCallback()
 
-        novel_result = develop_story(
-            self.novel_content,
-            simple_story_callback,
-            cleanup_text=self.cleanup_checkbox.GetValue(),
-        )
-        wx.CallAfter(self.submit_button.Enable, True)
-        wx.CallAfter(self.generate_random_content_button.Enable, True)
-        wx.CallAfter(
-            self.parent_frame.SetStatusText,
-            f"Novel generation is finished. Please check the generated file: {novel_result.html_file}",
-        )
+        try:
+            novel_result = develop_story(
+                self.novel_content,
+                simple_story_callback,
+                cleanup_text=self.cleanup_checkbox.GetValue(),
+            )
+            wx.CallAfter(self.submit_button.Enable, True)
+            wx.CallAfter(self.generate_random_content_button.Enable, True)
+            wx.CallAfter(
+                self.parent_frame.SetStatusText,
+                f"Novel generation is finished. Please check the generated file: {novel_result.html_file}",
+            )
+        except:
+            logger.exception("Could not develop the story. Please check the logs for more information.")
+            
 
     def update_chapters_generated(self, chapters: List[str]):
         self.parent_frame.SetStatusText(f"Generated {len(chapters)} chapter(s)")
@@ -190,9 +215,35 @@ class TabMain(wx.Panel):
     def generate_random_content(self, _event):
         novel_list = create_novel_content_list()
         novel_data = random.choice(novel_list)
+        self.display_novel_content(novel_data)
+
+    def display_novel_content(self, novel_data):
         self.story_title_textctrl.SetValue(novel_data.title)
         self.story_sub_title_textctrl.SetValue(novel_data.subtitle)
         self.story_description_textctrl.SetValue(novel_data.details)
+        author = (
+            novel_data.style_info.author
+            if novel_data.style_info.author is not None
+            else "Tolkien"
+        )
+        self.literary_author_textctrl.SetValue(author)
+        book = (
+            novel_data.style_info.book
+            if novel_data.style_info.book is not None
+            else "Lord of The Rings"
+        )
+        self.book_name_textctrl.SetValue(book)
+
+    def generate_on_the_fly(self, _event):
+        self.SetCursor(wx.Cursor(wx.CURSOR_WAIT))
+
+        try:
+            novel_content = generate_novel_content()
+            self.display_novel_content(novel_content)
+        except:
+            logger.exception("Could not generate novel content")
+        finally:
+            self.SetCursor(wx.Cursor(wx.CURSOR_DEFAULT))
 
 
 def validate(

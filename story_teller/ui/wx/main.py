@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 import webbrowser
 
@@ -105,20 +106,30 @@ class StoryTellerConfigFrame(wx.Frame):
     def add_menus(self):
         # Create a menu bar
         menuBar = wx.MenuBar()
-        
+
         # Create a menu
         file_menu = wx.Menu()
-        
+
         # Add a menu item for opening a folder, and bind it to the event handler
-        folderItem = file_menu.Append(wx.ID_ANY, 'Open Generation Folder', 'Reveals the generation folder')
+        folderItem = file_menu.Append(
+            wx.ID_ANY, "Open Generation Folder", "Reveals the generation folder"
+        )
         self.Bind(wx.EVT_MENU, self.open_generation_folder, folderItem)
 
-        menuBar.Append(file_menu, '&File')
+        # Add a menu item for opening a folder, and bind it to the event handler
+        exit_item = file_menu.Append(
+            wx.ID_ANY, "Exit", "Shutdown the application"
+        )
+        self.Bind(wx.EVT_MENU, self.exit, exit_item)
+
+        menuBar.Append(file_menu, "&File")
         self.SetMenuBar(menuBar)
 
     def open_generation_folder(self, _event):
         webbrowser.open(cfg.stories_path)
 
+    def exit(self, _event):
+        sys.exit(0)
 
 def show_error_message(parent):
     dialog = wx.MessageDialog(

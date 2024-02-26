@@ -6,6 +6,11 @@ human_message="""Generate all chapters for the novel described below:
 style_message="""You can write the chapters in the style of {author} and the book with the title: "{book}"."""
 
 [story]
+[story.generate_novel_content]
+human_message="""Generate the title, subtitle and the plot of a novel and suggest a book of a famous English author from the 19th, 20th or 21st century."""
+
+system_message="""You are a talented writer, great at imagining interesting plots"""
+
 [story.develop_chapter]
 prompt_template="""
 Generate the content of the chapter described between "=== START CHAPTER ===" and "=== END CHAPTER ===" for the novel described between "=== START NOVEL DESCRIPTION ===" and "=== END NOVEL DESCRIPTION ===".

@@ -20,7 +20,7 @@ class TabConfig(wx.Panel):
         self.chatgpt_key_textctrl.Bind(wx.EVT_TEXT, self.on_key_changed)
 
         # List of choices for the dropdown
-        choices = [cfg.openai_model, "gpt-4", "gpt-4-0613", "gpt-3.5-turbo"]
+        choices = [cfg.openai_model, "gpt-4", "gpt-4-0613"]
 
         # Create a wx.ComboBox dropdown for the models
         self.combo_models_label = wx.StaticText(
@@ -71,6 +71,7 @@ class TabConfig(wx.Panel):
             self, label=decorate_required_label("My Midjourney Key")
         )
         self.mymidjourney_key_text = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+        self.mymidjourney_key_text.SetValue(midjourney_cfg.bearer_token)
         self.mymidjourney_key_text.Bind(wx.EVT_TEXT, self.on_midjourney_key_changed)
 
         self.hide_midjourney_fields()
@@ -100,9 +101,11 @@ class TabConfig(wx.Panel):
 
     def on_model_changed(self, _event):
         cfg.openai_model = self.openai_models.GetValue()
+        cfg.init_llms()
 
     def image_quality_dall_e_combo_changed(self, _event):
         cfg.image_quality_dall_e = self.image_quality_dall_e_combo.GetValue()
+        cfg.init_llms()
 
     def on_key_changed(self, _event):
         cfg.openai_api_key = self.chatgpt_key_textctrl.GetValue()
@@ -126,10 +129,10 @@ class TabConfig(wx.Panel):
         if self.use_midjourney_check.IsChecked():
             self.mymidjourney_key_label.Show()
             self.mymidjourney_key_text.Show()
-            cfg.use_midjourney = False
+            cfg.use_midjourney = True
         else:
             self.hide_midjourney_fields()
-            cfg.use_midjourney = True
+            cfg.use_midjourney = False
         self.Layout()
 
     def hide_midjourney_fields(self):

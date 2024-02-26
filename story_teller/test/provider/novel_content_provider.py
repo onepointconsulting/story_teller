@@ -1,6 +1,7 @@
 from typing import List
 
 from story_teller.model.novel_content import NovelContent, StyleInfo
+from story_teller.service.generate_novel_content import generate_novel_content
 
 
 def create_simple_novel_content():
@@ -101,11 +102,23 @@ The menace of the past remains hidden in the maze.
     )
 
 
+def create_simple_content_6():
+    return NovelContent(
+        title="Whispers of the Ancients",
+        subtitle="A Tale of Forgotten Lore",
+        details="""
+Set against the backdrop of a world where magic and technology intertwine, 'Whispers of the Ancients' follows the journey of Elara, a young historian with a passion for uncovering lost knowledge. When she stumbles upon an ancient text that hints at the existence of a powerful artifact capable of reshaping reality, Elara is thrust into an adventure that spans continents and centuries. As she delves deeper into the mystery, she must navigate the treacherous waters of political intrigue and ancient enmities, all while deciphering the cryptic whispers of a long-forgotten magic that could either save or doom the world as she knows it.
+""",
+        style_info=StyleInfo(author="Mary Shelley", book="Frankenstein"),
+    )
+
+
 def create_novel_content_list() -> List[NovelContent]:
-    return [
+    res = [
         create_simple_novel_content(),
         create_simple_novel_content_2(),
         create_simple_novel_content_3(),
         create_simple_novel_content_4(),
-        create_simple_novel_content_5()
+        create_simple_novel_content_5(),
     ]
+    return res

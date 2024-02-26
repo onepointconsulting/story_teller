@@ -39,6 +39,9 @@ def generate_image(developed_chapter: DevelopedChapter) -> Union[Path, None]:
 
     {image_style_remark}
         """
+
+        logger.info("Image prompt: \n%s", invocation_text)
+
         image_url = dall_e.run(invocation_text)
     else:
         logger.info("Using no intermediate prompt to generate images")

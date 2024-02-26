@@ -2,8 +2,10 @@ from typing import Union
 
 from pathlib import Path
 
-from story_teller.config.log_factory import logger
+from playwright.sync_api import Page, expect
+from playwright.sync_api import sync_playwright
 
+from story_teller.config.log_factory import logger
 
 
 def convert_to_pdf(html_file: Path) -> Union[Path, None]:
@@ -25,10 +27,8 @@ def convert_to_pdf(html_file: Path) -> Union[Path, None]:
 
 
 if __name__ == "__main__":
-    from playwright.sync_api import Page, expect
-    from playwright.sync_api import sync_playwright
-
-    html_file = Path("/tmp/story_teller/output_2/output/novel_20240212_115453/novel.html")
+    html_file = Path(
+        "/tmp/story_teller/output_2/output/novel_20240212_115453/novel.html"
+    )
     pdf_file = convert_to_pdf(html_file)
     print(pdf_file)
-

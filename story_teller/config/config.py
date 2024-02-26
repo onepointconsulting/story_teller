@@ -60,7 +60,11 @@ class Config:
                 streaming=self.streaming,
                 max_tokens=self.openai_max_tokens,
             )
-            self.image_llm = OpenAI(
+            self.init_image_llm()
+            
+    def init_image_llm(self):
+        openai_api_key = self.openai_api_key
+        self.image_llm = OpenAI(
                 openai_api_key=openai_api_key,
                 temperature=self.openai_image_gen_temperature,
             )
