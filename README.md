@@ -36,3 +36,9 @@ python.exe ./story_teller/story_teller_main_cli.py
 ```bash
 python .\story_teller\ui\wx\main.py
 ```
+
+If you are on Windows and have Powershell installed, you can simply run this script:
+
+```
+.\start.ps1
+```
