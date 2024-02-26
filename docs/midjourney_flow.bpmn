@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_12xnrau" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.12.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
+  <bpmn:process id="Process_0g2k38w" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1mnnixj</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1mnnixj" sourceRef="StartEvent_1" targetRef="Activity_18hlg55" />
+    <bpmn:sequenceFlow id="Flow_0npehol" sourceRef="Activity_18hlg55" targetRef="Activity_1ve7qrz" />
+    <bpmn:sequenceFlow id="Flow_12nzauq" sourceRef="Activity_1ve7qrz" targetRef="Activity_1ek5jle" />
+    <bpmn:userTask id="Activity_18hlg55" name="Enter prompt">
+      <bpmn:incoming>Flow_1mnnixj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0npehol</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1ve7qrz" name="Generate 4 original images">
+      <bpmn:incoming>Flow_0npehol</bpmn:incoming>
+      <bpmn:outgoing>Flow_12nzauq</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1ek5jle" name="Select image for upscaing">
+      <bpmn:incoming>Flow_12nzauq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0u82cri</bpmn:outgoing>
+      <bpmn:standardLoopCharacteristics />
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0u82cri" sourceRef="Activity_1ek5jle" targetRef="Activity_1u72onm" />
+    <bpmn:serviceTask id="Activity_1u72onm" name="Upscale image">
+      <bpmn:incoming>Flow_0u82cri</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tayuiw</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1tayuiw" sourceRef="Activity_1u72onm" targetRef="Activity_1qb7rqb" />
+    <bpmn:endEvent id="Event_0l731j0">
+      <bpmn:incoming>Flow_0hnzzjo</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0hnzzjo" sourceRef="Activity_1qb7rqb" targetRef="Event_0l731j0" />
+    <bpmn:serviceTask id="Activity_1qb7rqb" name="Save all images">
+      <bpmn:incoming>Flow_1tayuiw</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hnzzjo</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:textAnnotation id="TextAnnotation_0sakbss">
+      <bpmn:text>Maximum 4 images</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_162thrr" sourceRef="Activity_1ek5jle" targetRef="TextAnnotation_0sakbss" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0g2k38w">
+      <bpmndi:BPMNShape id="TextAnnotation_0sakbss_di" bpmnElement="TextAnnotation_0sakbss">
+        <dc:Bounds x="690" y="50" width="100" height="41" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1yz37y6_di" bpmnElement="Activity_18hlg55">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ggsrwd_di" bpmnElement="Activity_1ve7qrz">
+        <dc:Bounds x="430" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xv6npl_di" bpmnElement="Activity_1ek5jle">
+        <dc:Bounds x="590" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0sbeioh_di" bpmnElement="Activity_1u72onm">
+        <dc:Bounds x="750" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0l731j0_di" bpmnElement="Event_0l731j0">
+        <dc:Bounds x="1072" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0toywk2_di" bpmnElement="Activity_1qb7rqb">
+        <dc:Bounds x="910" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_162thrr_di" bpmnElement="Association_162thrr">
+        <di:waypoint x="676" y="137" />
+        <di:waypoint x="717" y="91" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1mnnixj_di" bpmnElement="Flow_1mnnixj">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0npehol_di" bpmnElement="Flow_0npehol">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="430" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12nzauq_di" bpmnElement="Flow_12nzauq">
+        <di:waypoint x="530" y="177" />
+        <di:waypoint x="590" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u82cri_di" bpmnElement="Flow_0u82cri">
+        <di:waypoint x="690" y="177" />
+        <di:waypoint x="750" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tayuiw_di" bpmnElement="Flow_1tayuiw">
+        <di:waypoint x="850" y="177" />
+        <di:waypoint x="910" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hnzzjo_di" bpmnElement="Flow_0hnzzjo">
+        <di:waypoint x="1010" y="177" />
+        <di:waypoint x="1072" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
