@@ -1,0 +1,49 @@
+POST https://api.mymidjourney.ai/api/v1/midjourney/imagine
+
+{
+    "prompt": "An angel smiling amongst the clouds"
+}
+Response: 
+{
+    "success": true,
+    "messageId": "cb3306a2-7d62-4caa-95d6-7c2fe72035a8",
+    "createdAt": "2024-02-10T10:08:10+00:00"
+}
+
+GET https://api.mymidjourney.ai/api/v1/midjourney/message/cb3306a2-7d62-4caa-95d6-7c2fe72035a8
+Response:
+{
+    "prompt": "An angel smiling amongst the clouds",
+    "uri": "https://cdn.discordapp.com/attachments/1190270449121251392/1205817674890870905/thisistomas247_An_angel_smiling_amongst_the_clouds_9f31772a-8bc3-486a-b792-2dde4bb542d0.png?ex=65d9c038&is=65c74b38&hm=b77005601039e9a93406ecb3bb7f0d400aa2e356a33d0b76dad735d818269b52&",
+    "progress": 100,
+    "buttons": [
+        "U1",
+        "U2",
+        "U3",
+        "U4",
+        "🔄",
+        "V1",
+        "V2",
+        "V3",
+        "V4"
+    ],
+    "messageId": "cb3306a2-7d62-4caa-95d6-7c2fe72035a8",
+    "createdAt": "2024-02-10T10:08:10+00:00",
+    "updatedAt": "2024-02-10T10:08:57+00:00"
+}
+
+POST https://api.mymidjourney.ai/api/v1/midjourney/button
+
+{
+    "messageId": "cb3306a2-7d62-4caa-95d6-7c2fe72035a8",
+    "button": "U2"
+}
+Response:
+{
+    "success": true,
+    "messageId": "f3e14754-a793-4eef-adc9-8ff5fb608291",
+    "createdAt": "2024-02-10T10:14:51+00:00"
+}
+
+GET https://api.mymidjourney.ai/api/v1/midjourney/message/f3e14754-a793-4eef-adc9-8ff5fb608291
+Response:
